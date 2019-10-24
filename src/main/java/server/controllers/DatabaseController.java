@@ -77,18 +77,29 @@ public class DatabaseController {
         return null;
     }
 
-    public ResultSet executePreparedStatement(PreparedStatement ps) {
+    public ResultSet executePreparedStatementQuery(PreparedStatement ps) {
     ResultSet rs = null;
     try {
-        boolean retrievedSucessfully = ps.execute();
-        //check if successfull
-        if(retrievedSucessfully)
-            rs = ps.getResultSet();
-        else System.out.println("Something went wrong");
+        rs = ps.executeQuery();
     } catch (SQLException e) {
         System.out.println(e.getMessage());
     }
     // Return the resultset which at this point will be null if somethis went wrong
         return rs;
+    }
+
+    public boolean executePreparedStatementUpdate(PreparedStatement ps) {
+        boolean success = false;
+        try {
+            int retrievedSucessfully = ps.executeUpdate();
+            //check if successfull
+            if(retrievedSucessfully > 0)
+                success = true;
+            else System.out.println("Something went wrong");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        // Return the resultset which at this point will be null if somethis went wrong
+        return success;
     }
 }

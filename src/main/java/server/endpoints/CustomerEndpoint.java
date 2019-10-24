@@ -34,13 +34,15 @@ public class CustomerEndpoint {
 
     @POST
     public Response createCustomer(String customer) {
-        //TODO complete this method
-        return null;
+        Customer in = new Gson().fromJson(customer, Customer.class);
+        String out = new Gson().toJson(CustomerController.createCustomer(in));
+        return Response.status(200).type(MediaType.APPLICATION_JSON).entity(out).build();
     }
 
     @PUT
     public Response updateCustomer(String customer) {
-        //TODO complete this method
-        return null;
+        Customer in = new Gson().fromJson(customer, Customer.class);
+        String out = new Gson().toJson(CustomerController.updateCustomer(in));
+        return Response.status(200).type(MediaType.APPLICATION_JSON).entity(out).build();
     }
 }
