@@ -17,9 +17,10 @@ public class DatabaseController {
     }
 
     public static Connection getConnection() {
+        String url = "";
         try {
             // Set the dataabase connect with the data from the config
-            String url =
+            url =
                     "jdbc:mysql://"
                             + Config.getDatabaseHost()
                             + ":"
@@ -99,7 +100,6 @@ public class DatabaseController {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        // Return the resultset which at this point will be null if somethis went wrong
-        return success;
+        return true;
     }
 }

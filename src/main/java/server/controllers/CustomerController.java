@@ -64,19 +64,16 @@ public class CustomerController {
         if (dbCon == null) {
             dbCon = new DatabaseController();
         }
+        Customer out = null;
         String sql = "INSERT INTO customers(name, balance) VALUES (?, ?);";
         PreparedStatement ps = dbCon.prepare(sql);
         try {
             ps.setString(1, customer.getName());
             ps.setInt(2, customer.getBalance());
-            if(dbCon.executePreparedStatementUpdate(ps)) {
-                //TODO update this to return the actual customer created including the account number
-                return customer;
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return customer;
     }
 
     public static Customer updateCustomer(Customer customer) {
@@ -84,7 +81,6 @@ public class CustomerController {
             dbCon = new DatabaseController();
         }
         String sql = "UPDATE customers SET name = ?, balance = ? WHERE account_no = ?;";
-        //TODO update this method, so we don't need to send both name and balance.
         PreparedStatement ps = dbCon.prepare(sql);
         try {
             ps.setString(1, customer.getName());

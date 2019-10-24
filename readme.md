@@ -33,11 +33,70 @@ You can. But I would really recommend that you don't. Mainly for the following r
 2. Clone this project
 3. Open IntelliJ and import project with external model and maven. Remember to import maven. This can be done by clicking the pop’up and selecting `import`. Else you can right click the `pom.xml` file and select `maven` and `import`
 4. Add new configuration in the top of IntelliJ. Select `tomcat` → `local` and click `fix` in the bottom where you have a warning.
-5. **(THIS STEP IS ONLY NECESSARY IF YOU DIDN'T DO IT DURING THE HACKATHON!)** Open a connection to you MySQL database (can be done directly through the terminal, or Workbench or Sequel Pro ) and run the `init.sql` script which can be found in the resources folder.
-6. Run your server
+5. **(THIS STEP IS ONLY NECESSARY IF YOU DIDN'T DO IT DURING THE HACKATHON! OR YOU WANT TO RESET YOUR DATABASE)** Open a connection to you MySQL database (can be done directly through the terminal, or Workbench or Sequel Pro ) and run the `init.sql` script which can be found in the resources folder.
+6. Run your server - You should get an error. Proceed to exercises. 
 
 ## Exercises
 For the following exercises you should only place breakpoints in your `CustomerEndpoint class
 
 ### Exercise 1
+When you run your server, you get an error. Where is it? Find it and fix it. This isn't exactly a debugging exercise, but if you look at your server log (Tomcat Localhost Log), you will find your error.
+Which error do you get? And on which line? Hint: the error is in your `config.json`
 
+After you have fixed this, your server should be able to run. 
+
+### Exercise 2
+If you run your server, and go to localhost:8080/customers/ **(remember to use the correct path if your intellij uses localhost:8080/something_war_exploded/ use that)** you should get another error. 
+
+Put a breakpoint in your `CustomerEndpoint` on line 28 and start your server in debug mode. After it has started send a http-get-request to your customers, and your code will stop executing on the line where you put your breakpoint. Then do the following: 
+
+1) Step into `CustomerController.getCustomers`.
+2) Step into `dbCon.query(sql)`.
+3) Step into `getConnection`
+4) Step over until you reach line 40. You get an exception. Why? Inspect the URL-variable. What's wrong. Remember how we connect to a MySQL-database.
+
+### Exercise 3
+Try to create a customer. Use postman or advanced rest client to send a post request (or your client that you built during the hackathon, if you are sure that it nothing is wrong with it - if it fails, use postman or rest ;-) ). 
+
+Everything succeeds, and your client returns the user, that you tried to created, but the user isn't added to the database. What's wrong? Set your breakpoint in the `customerEndpoint` in the `POST` method, and work your way from there. What happens with the PS?
+
+Hint. If you're having trouble getting into the `updateCustomer` in line 45 in `CustomerEndpoint` you have to step into the line, which moves you into the Gson library, and then you have to *step out* (the up arrow) of this, and then step into line 45 again.  
+
+### Exercise 4
+This exercise has two parts. Start by setting a breakpoint in your `PUT` method in `CusomerEndpoint`.
+1) Use postman send a put-request with the following body:
+```
+{
+  "name": "THIS IS CHANGED!",
+  "balance": 10000,
+  "account_no": 2
+}
+```
+Everything works without errors. But the database is never updated. Why not? Tip: Inspect your prepared statement or your customer object. Where is the error? Look at the name of the fields of the customer class.
+
+2) Change the `updateCustomer` to the following
+```
+public static Customer updateCustomer(Customer customer) {
+        if (dbCon == null) {
+            dbCon = new DatabaseController();
+        }
+        Customer customerFromDatabase = getCustomer(customer.getAccountNo());
+        String sql = "UPDATE customers SET name = ?, balance = ? WHERE account_no = ?;";
+        PreparedStatement ps = dbCon.prepare(sql);
+        try {
+            ps.setString(1, customerFromDatabase.getName());
+            ps.setInt(2, customerFromDatabase.getBalance());
+            ps.setInt(3, customerFromDatabase.getAccountNo());
+            if(dbCon.executePreparedStatementUpdate(ps)) {
+                return customer;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+``` 
+And run again. Nothing gets updated even though you don't have the same problem as above. What's wrong? Fix it.
+
+## FINISHED
