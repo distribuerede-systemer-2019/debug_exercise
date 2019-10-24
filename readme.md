@@ -45,6 +45,8 @@ Which error do you get? And on which line? Hint: the error is in your `config.js
 
 After you have fixed this, your server should be able to run. 
 
+**Solution**: Change line 5 in config.json to DATABASE_PASSWORD
+
 ### Exercise 2
 If you run your server, and go to localhost:8080/customers/ **(remember to use the correct path if your intellij uses localhost:8080/something_war_exploded/ use that)** you should get another error. 
 
@@ -55,12 +57,22 @@ Put a breakpoint in your `CustomerEndpoint` on line 28 and start your server in 
 3) Step into `getConnection`
 4) Step over until you reach line 40. You get an exception. Why? Inspect the URL-variable. What's wrong. Remember how we connect to a MySQL-database.
 
+**solution**: Change port to 3006
+
 ### Exercise 3
 Try to create a customer. Use postman or advanced rest client to send a post request (or your client that you built during the hackathon, if you are sure that it nothing is wrong with it - if it fails, use postman or rest ;-) ). 
 
 Everything succeeds, and your client returns the user, that you tried to created, but the user isn't added to the database. What's wrong? Set your breakpoint in the `customerEndpoint` in the `POST` method, and work your way from there. What happens with the PS?
 
 Hint. If you're having trouble getting into the `updateCustomer` in line 45 in `CustomerEndpoint` you have to step into the line, which moves you into the Gson library, and then you have to *step out* (the up arrow) of this, and then step into line 45 again.  
+
+**Solution**: Change line 103 in DB to return the variable `success` instead of true. Change line 73 in `customerController` to 
+```
+if(dbCon.executePreparedStatementUpdate(ps)) {
+    out = customer;
+}
+```
+and return out instead of customer. 
 
 ### Exercise 4
 This exercise has two parts. Start by setting a breakpoint in your `PUT` method in `CusomerEndpoint`.
@@ -98,5 +110,11 @@ public static Customer updateCustomer(Customer customer) {
 
 ``` 
 And run again. Nothing gets updated even though you don't have the same problem as above. What's wrong? Fix it.
+
+**Solution**: 
+
+Part 1: The json that we're sending is using account_no which is how it looks in the database, **not in the model of our server** and thus the accountNo of a customer is always 0
+
+Part 2: We're getting a customer from the database and updating that customer to the same values instead of actually using the input customer, that we're sending.   
 
 ## FINISHED

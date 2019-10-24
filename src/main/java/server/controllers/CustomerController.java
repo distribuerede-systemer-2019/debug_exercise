@@ -70,10 +70,13 @@ public class CustomerController {
         try {
             ps.setString(1, customer.getName());
             ps.setInt(2, customer.getBalance());
+            if(dbCon.executePreparedStatementUpdate(ps)) {
+                out = customer;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return customer;
+        return out;
     }
 
     public static Customer updateCustomer(Customer customer) {
