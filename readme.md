@@ -1,4 +1,4 @@
-# Hackathon 2019 - Bank System
+# Hackathon 2019 - Bank System - DEBUGGING!
 In this exercise session we will teach you how to use the debugger. This is done through intelliJ as this is your default IDE. Debugging is used two find bugs (as the name implies) and localise errors. If something doesn't work as intented, the debugger is your best friend. **These exercises are built on top of the hackathon. I have included some errors, and it's your job to fix them!**
 
 ## Introduction
