@@ -37,7 +37,7 @@ public class DatabaseController {
             // create a connection to the database
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return connection;
     }
@@ -56,8 +56,8 @@ public class DatabaseController {
             if(retrievedSucessfully)
                 rs = ps.getResultSet();
             else System.out.println("Something went wrong");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         // Return the resultset which at this point will be null if somethis went wrong
         return rs;
