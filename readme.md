@@ -4,7 +4,7 @@ In this exercise session we will teach you how to use the debugger. This is done
 ## Introduction
 Refer to the following image for for the introduction part of this exercise.
 
-<img 3>
+![](https://i.imgur.com/jMiYMfC.png)
 
 When debugging  you should run your code in debugging mode. This is the green icon next to the play icon **(point 1)**
 
