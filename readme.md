@@ -60,7 +60,7 @@ Try to create a customer. Use postman or advanced rest client to send a post req
 
 Everything succeeds, and your client returns the user, that you tried to created, but the user isn't added to the database. What's wrong? Set your breakpoint in the `customerEndpoint` in the `POST` method, and work your way from there. What happens with the PS?
 
-Hint. If you're having trouble getting into the `updateCustomer` in line 45 in `CustomerEndpoint` you have to step into the line, which moves you into the Gson library, and then you have to *step out* (the up arrow) of this, and then step into line 45 again.  
+Hint. If you're having trouble getting into the `createCustomer` in line 45 in `CustomerEndpoint` you have to step into the line, which moves you into the Gson library, and then you have to *step out* (the up arrow) of this, and then step into line 45 again.  
 
 ### Exercise 4
 This exercise has two parts. Start by setting a breakpoint in your `PUT` method in `CusomerEndpoint`.
